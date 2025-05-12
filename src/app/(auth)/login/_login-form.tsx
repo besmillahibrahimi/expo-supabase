@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
-import { Link } from "@/components/ui/link";
+import { Link, LinkText } from "@/components/ui/link";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { supabase } from "@/configs/supabase";
@@ -139,7 +139,9 @@ export default function LoginForm() {
 						</Box>
 
 						<Link href="/login" className="text-blue-600 hover:text-blue-800">
+						<LinkText>
 							Back to Login
+						</LinkText>
 						</Link>
 					
 			</VStack>

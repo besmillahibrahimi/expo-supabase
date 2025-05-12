@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import ForgotPasswordForm from "./(auth)/forgot-password/_forgot-password-form";
 
 export default function Index() {
   return (
@@ -9,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>this is a what.</Text>
+      <ForgotPasswordForm />
     </View>
   );
 }

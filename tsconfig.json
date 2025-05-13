@@ -4,7 +4,7 @@
     "strict": true,
     "paths": {
       "@/*": [
-        "./src/**/*"
+        "./src/*"
       ],
       "tailwind.config": [
         "./tailwind.config.js"
@@ -17,5 +17,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ]
+  ],
+  "exclude": ["node_modules", "android", "ios"]
 }

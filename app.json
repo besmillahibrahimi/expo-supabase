@@ -39,12 +39,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
+      "supportsRTL": true,
       "router": {
         "root": "src/app"
       },

@@ -13,6 +13,7 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"useEditorconfig": true
+		
 	},
 	"organizeImports": {
 		"enabled": true
@@ -25,7 +26,8 @@
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"quoteStyle": "double",
+			"semicolons": "always"
 		}
 	}
 }

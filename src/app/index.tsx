@@ -1,6 +1,6 @@
 import { View } from "react-native";
-import ForgotPasswordForm from "./(auth)/forgot-password/_forgot-password-form";
 
+import SignupForm from "@/components/blocks/auth/signup-form";
 export default function Index() {
   return (
     <View
@@ -10,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <ForgotPasswordForm />
+      <SignupForm />
     </View>
   );
 }

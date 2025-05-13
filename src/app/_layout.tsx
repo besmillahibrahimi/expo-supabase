@@ -2,7 +2,6 @@ import { Text } from "@/components/ui/text";
 import "@/configs/i18n";
 import { DefaultLocale, type Locale, Locales } from "@/configs/i18n/constants";
 import "@/styles/global.css";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from "expo-localization";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -20,11 +19,9 @@ export default function RootLayout() {
     const initializeI18n = async () => {
       try {
         // Get device locale
-        const currentLocale = (await AsyncStorage.getItem("locale")) as Locale;
-        const deviceLocale =
-          currentLocale ??
-          ((Localization.getLocales()[0].languageCode ??
-            DefaultLocale) as Locale);
+
+        const deviceLocale = (Localization.getLocales()[0].languageCode ??
+          DefaultLocale) as Locale;
 
         // Set language based on device locale (fallback to English if not supported)
         const language = Locales.includes(deviceLocale) ? deviceLocale : "en";

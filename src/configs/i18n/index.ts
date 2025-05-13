@@ -61,12 +61,19 @@ function getModuleIdForTranslation(language: string, namespace: string) {
     "en-common": require("../../assets/locales/en/common.json"),
     "en-auth": require("../../assets/locales/en/auth.json"),
     "fa-common": require("../../assets/locales/fa/common.json"),
-    "fa-auth": require("../../assets/locales/fa/auth.json"),
-    // Add more translations as needed
+    "fa-auth": require("../../assets/locales/fa/auth.json")
   };
 
   const key = `${language}-${namespace}`;
-  return translations[key];
+  const translation = translations[key];
+
+  console.log('key', key);
+  if (!translation) {
+    console.log(`Translation not found for ${key}`);
+    return {};
+  }
+  
+  return translation;
 }
 
 // Initialize i18next

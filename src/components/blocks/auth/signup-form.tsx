@@ -14,12 +14,13 @@ import { VStack } from "@/components/ui/vstack";
 import { type SignupFormData, signupSchema } from "@/lib/schema/signup.schema";
 import { signup } from "@/services/auth/signup.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 export default function SignupForm() {
+  const router = useRouter();
   const { t } = useTranslation(["auth"]);
 
   const form = useForm<SignupFormData>({

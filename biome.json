@@ -13,7 +13,6 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"useEditorconfig": true
-		
 	},
 	"organizeImports": {
 		"enabled": true

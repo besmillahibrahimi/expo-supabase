@@ -15,7 +15,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { login } from "@/services/auth/login.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -25,6 +25,7 @@ import {
 import { Box } from "../../ui/box";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),

@@ -16,7 +16,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { resetPassword } from "@/services/auth/reset-password.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ import {
 } from "../../../lib/schema/reset-password.schema";
 
 export default function ResetPasswordForm() {
+  const router = useRouter();
   const { t } = useTranslation(["auth"]);
   const [isPending, startTransition] = useTransition();
   const form = useForm<ResetPasswordFormData>({

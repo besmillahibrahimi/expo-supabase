@@ -14,6 +14,7 @@ export async function login(
   });
 
   if (error) {
+    console.log('login error', user, error.name);
     return {
       ok: false,
       error,

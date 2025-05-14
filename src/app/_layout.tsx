@@ -3,6 +3,7 @@ import "@/configs/i18n";
 import { DefaultLocale, type Locale, Locales } from "@/configs/i18n/constants";
 import { Providers } from "@/providers/providers";
 import "@/styles/global.css";
+import { useFonts } from "expo-font";
 import * as Localization from "expo-localization";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -43,15 +44,25 @@ export default function RootLayout() {
     initializeI18n();
   }, [i18n]);
 
-  if (!isI18nInitialized) {
+  const [loaded] = useFonts({
+    "Vazirmatn-Thin": require("../assets/fonts/Vazirmatn-Thin.ttf"),
+    "Vazirmatn-ExtraLight": require("../assets/fonts/Vazirmatn-ExtraLight.ttf"),
+    "Vazirmatn-Light": require("../assets/fonts/Vazirmatn-Light.ttf"),
+    "Vazirmatn-Regular": require("../assets/fonts/Vazirmatn-Regular.ttf"),
+    "Vazirmatn-Medium": require("../assets/fonts/Vazirmatn-Medium.ttf"),
+    "Vazirmatn-SemiBold": require("../assets/fonts/Vazirmatn-SemiBold.ttf"),
+    "Vazirmatn-Bold": require("../assets/fonts/Vazirmatn-Bold.ttf"),
+    "Vazirmatn-ExtraBold": require("../assets/fonts/Vazirmatn-ExtraBold.ttf"),
+    "Vazirmatn-Black": require("../assets/fonts/Vazirmatn-Black.ttf"),
+  });
+
+  if (!isI18nInitialized || !loaded) {
     return <Text>Loading...</Text>;
   }
 
   return (
     <Providers>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
+      <Stack/>
     </Providers>
   );
 }

@@ -1,22 +1,20 @@
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControl,
   FormControlError,
   FormControlErrorText,
-  FormControlHelper,
-  FormControlHelperText,
   FormControlLabel,
-  FormControlLabelText,
+  FormControlLabelText
 } from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Link, LinkText } from "@/components/ui/link";
-import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { forgotPassword } from "@/services/auth/forgot-password.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   type ForgotPasswordFormData,
   forgotPasswordSchema,
@@ -24,6 +22,7 @@ import {
 import { Box } from "../../ui/box";
 
 export default function ForgotPasswordForm() {
+  const { t } = useTranslation(['auth']);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ForgotPasswordFormData>({
@@ -49,37 +48,28 @@ export default function ForgotPasswordForm() {
     <Box className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
       <VStack space="md">
         <Heading size="xl" className="text-center">
-          Forgot Password
+          {t("forgotPassword")}
         </Heading>
 
-        <Text className="text-center">
-          Enter your email address and we&apos;ll send you instructions to reset
-          your password.
-        </Text>
         <Box className="space-y-4 w-full">
           <Controller
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.email?.message} isDisabled={isPending}>
                 <FormControlLabel>
-                  <FormControlLabelText>Email</FormControlLabelText>
+                  <FormControlLabelText>{t("email.label")}</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                   <InputField
-                    placeholder="Enter your email"
+                    placeholder={t("email.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
                   />
                 </Input>
-                <FormControlHelper>
-                  <FormControlHelperText>
-                    Must be atleast 6 characters.
-                  </FormControlHelperText>
-                </FormControlHelper>
                 <FormControlError>
                   <FormControlErrorText>
-                    Atleast 6 characters are required.
+                    {form.formState.errors.email?.message && t(form.formState.errors.email?.message)}
                   </FormControlErrorText>
                 </FormControlError>
               </FormControl>
@@ -92,13 +82,13 @@ export default function ForgotPasswordForm() {
             onPress={handleSubmit}
           >
             <ButtonText>
-              {isPending ? "Sending..." : "Send Reset Instructions"}
+              {isPending ? <ButtonSpinner /> : t("sendResetInstructions")}
             </ButtonText>
           </Button>
         </Box>
 
         <Link href="/login" className="text-blue-600 hover:text-blue-800">
-          <LinkText>Back to Login</LinkText>
+          <LinkText>{t("loginBack")}</LinkText>
         </Link>
       </VStack>
     </Box>

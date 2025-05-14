@@ -1,17 +1,14 @@
 import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControl,
   FormControlError,
   FormControlErrorText,
-  FormControlHelper,
-  FormControlHelperText,
   FormControlLabel,
-  FormControlLabelText,
+  FormControlLabelText
 } from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
-import { Link, LinkText } from "@/components/ui/link";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { resetPassword } from "@/services/auth/reset-password.service";
@@ -64,22 +61,18 @@ export default function ResetPasswordForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.password?.message} isDisabled={isPending}>
                 <FormControlLabel>
                   <FormControlLabelText>{t("password")}</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField
+                  <InputField type="password"
                     placeholder={t("password.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
                   />
                 </Input>
-                <FormControlHelper>
-                  <FormControlHelperText>
-                    {t("password.helper")}
-                  </FormControlHelperText>
-                </FormControlHelper>
+               
                 <FormControlError>
                   <FormControlErrorText>
                     {form.formState.errors.password?.message &&
@@ -93,24 +86,19 @@ export default function ResetPasswordForm() {
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.confirmPassword?.message} isDisabled={isPending}>
                 <FormControlLabel>
                   <FormControlLabelText>
                     {t("confirmPassword")}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField
+                  <InputField type="password"
                     placeholder={t("confirmPassword.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
                   />
                 </Input>
-                <FormControlHelper>
-                  <FormControlHelperText>
-                    {t("confirmPassword.helper")}
-                  </FormControlHelperText>
-                </FormControlHelper>
                 <FormControlError>
                   <FormControlErrorText>
                     {form.formState.errors.confirmPassword?.message &&
@@ -127,14 +115,10 @@ export default function ResetPasswordForm() {
             onPress={handleSubmit}
           >
             <ButtonText>
-              {isPending ? "Loading..." : t("resetPassword")}
+              {isPending ? <ButtonSpinner /> : t("resetPassword")}
             </ButtonText>
           </Button>
         </Box>
-
-        <Link href="/login" className="text-blue-600 hover:text-blue-800">
-          <LinkText>{t("loginBack")}</LinkText>
-        </Link>
       </VStack>
     </Box>
   );

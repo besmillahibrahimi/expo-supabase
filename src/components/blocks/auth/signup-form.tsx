@@ -1,5 +1,5 @@
 import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControl,
   FormControlError,
@@ -135,7 +135,7 @@ export default function SignupForm() {
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField
+                  <InputField type="password"
                     placeholder={t("password.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -165,7 +165,7 @@ export default function SignupForm() {
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField
+                  <InputField type="password"
                     placeholder={t("confirmPassword.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -188,7 +188,7 @@ export default function SignupForm() {
             onPress={handleSubmit}
           >
             <ButtonText>
-              {isPending ? "loading..." : t("getStarted")}
+              {isPending ? <ButtonSpinner />: t("getStarted")}
             </ButtonText>
           </Button>
         </VStack>

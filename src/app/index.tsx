@@ -1,8 +1,11 @@
-import SignupForm from "@/components/blocks/auth/signup-form";
+import LoginForm from "@/components/blocks/auth/login-form";
+import { Text } from "@/components/ui/text";
+import { useApp } from "@/providers/app.provider";
 import { View } from "react-native";
 
 
 export default function Index() {
+  const {auth} = useApp();
   return (
     <View
       style={{
@@ -11,7 +14,8 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <SignupForm/>
+      <Text>{auth.authUser?.email}</Text>
+      <LoginForm/>
     </View>
   );
 }

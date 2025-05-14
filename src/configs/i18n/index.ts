@@ -67,7 +67,6 @@ function getModuleIdForTranslation(language: string, namespace: string) {
   const key = `${language}-${namespace}`;
   const translation = translations[key];
 
-  console.log('key', key);
   if (!translation) {
     console.log(`Translation not found for ${key}`);
     return {};

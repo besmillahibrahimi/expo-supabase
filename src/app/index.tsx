@@ -1,4 +1,4 @@
-import { Text } from "@/components/ui/text";
+import SignupForm from "@/components/blocks/auth/signup-form";
 import { View } from "react-native";
 
 
@@ -11,7 +11,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Hello</Text>
+      <SignupForm/>
     </View>
   );
 }

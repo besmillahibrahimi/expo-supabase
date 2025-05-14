@@ -1,6 +1,7 @@
 import { Text } from "@/components/ui/text";
 import "@/configs/i18n";
 import { DefaultLocale, type Locale, Locales } from "@/configs/i18n/constants";
+import { Providers } from "@/providers/providers";
 import "@/styles/global.css";
 import * as Localization from "expo-localization";
 import { Stack } from "expo-router";
@@ -46,5 +47,11 @@ export default function RootLayout() {
     return <Text>Loading...</Text>;
   }
 
-  return <Stack />;
+  return (
+    <Providers>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+      </Stack>
+    </Providers>
+  );
 }

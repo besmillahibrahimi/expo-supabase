@@ -8,5 +8,10 @@ export const Env = envSchema.parse({
   },
   app: {
     name: "Educational App",
+    schema: "com.besmillahibrahimi.educationalapp",
+  },
+  google: {
+    clientId:
+      "1043752002269-u0g66sde8ucj542pk5vs4c7035m3r7sh.apps.googleusercontent.com",
   },
 });

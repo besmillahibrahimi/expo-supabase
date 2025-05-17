@@ -1,3 +1,4 @@
+import { GoogleSignIn } from "@/components/google-sign-in";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControl,
@@ -22,7 +23,6 @@ import {
   loginSchema,
 } from "../../../lib/schema/login.schema";
 import { Box } from "../../ui/box";
-
 export default function LoginForm() {
   const toast = useToast();
   const router = useRouter();
@@ -75,6 +75,7 @@ export default function LoginForm() {
         </Heading>
 
         <VStack space="md" className="w-full">
+          <GoogleSignIn />
           <Controller
             control={form.control}
             name="email"

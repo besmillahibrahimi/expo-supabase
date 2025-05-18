@@ -46,15 +46,11 @@ export function useAuth() {
 
         const authUser = await supabase.auth.getUser();
 
-        if (!authUser.data.user) {
-          router.push("/(auth)/login");
-          return;
-        }
+        if (authUser.data.user) {
+          const user = await supabase.from("users").select("*").eq("id", authUser.data.user.id).single();
 
-
-        const user = await supabase.from("users").select("*").eq("id", authUser.data.user.id).single();
-
-        dispatch({ type: "SET_USER", payload: { authUser: authUser.data.user, user: user.data } });
+          dispatch({ type: "SET_USER", payload: { authUser: authUser.data.user, user: user.data } });
+        } 
       } catch (error) {
         dispatch({
           type: "SET_ERROR",
@@ -62,7 +58,7 @@ export function useAuth() {
         });
       }
     });
-  }, [router]);
+  }, []);
 
   const logout = useCallback(async () => {
     startTransition(async () => {

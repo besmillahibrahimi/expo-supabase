@@ -12,7 +12,10 @@ export const GoogleSignIn = () => {
 
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-    webClientId: Env.google.clientId,
+    webClientId: Env.google.webClientId,
+    iosClientId: Env.google.iosClientId,
+    offlineAccess: true,
+    forceCodeForRefreshToken: true,
   });
 
   return (
@@ -34,6 +37,7 @@ export const GoogleSignIn = () => {
           }
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         } catch (error: any) {
+          console.log("error", error);
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow
             toast.show({

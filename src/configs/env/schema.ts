@@ -6,7 +6,10 @@ export const envSchema = z.object({
     schema: z.string(),
   }),
   google: z.object({
-    clientId: z.string(),
+    androidClientId: z.string(),
+    webClientId: z.string(),
+    iosClientId: z.string().optional(),
+
   }),
   supabase: z.object({
     url: z.string(),

@@ -13,14 +13,17 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 1. Install dependencies
 
    ```bash
-   pnpm install
+   yarn install
    ```
 
 2. Start the app
 
    ```bash
-   pnpm android
+   yarn android
    ```
+
+On Linux: sudo apt-get install build-essential
+On Windows: Install Visual Studio Build Tools
 
 In the output, you'll find options to open the app in a
 

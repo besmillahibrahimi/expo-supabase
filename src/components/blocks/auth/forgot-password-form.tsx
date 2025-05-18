@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
-import { Link, LinkText } from "@/components/ui/link";
 import { VStack } from "@/components/ui/vstack";
 import { forgotPassword } from "@/services/auth/forgot-password.service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "expo-router";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -88,7 +88,7 @@ export default function ForgotPasswordForm() {
         </Box>
 
         <Link href="/login" className="text-blue-600 hover:text-blue-800">
-          <LinkText>{t("loginBack")}</LinkText>
+          {t("loginBack")}
         </Link>
       </VStack>
     </Box>

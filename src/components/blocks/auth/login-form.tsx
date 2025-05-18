@@ -13,7 +13,7 @@ import { Toast, ToastDescription, useToast } from "@/components/ui/toast";
 import { VStack } from "@/components/ui/vstack";
 import { login } from "@/services/auth/login.service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -135,6 +135,10 @@ export default function LoginForm() {
               </FormControl>
             )}
           />
+
+          <Link href="/forgot-password">
+            Forgot Password?
+          </Link>
 
           <Button
             variant="solid"

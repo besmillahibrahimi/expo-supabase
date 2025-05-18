@@ -1,18 +1,18 @@
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import { GluestackUIProvider, type ModeType } from "@/components/ui/gluestack-ui-provider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 
-type Theme = "light" | "dark";
+
 
 interface ThemeContextType {
-  theme: Theme;
+  theme: ModeType;
   toggleTheme: () => void;
 }
 
@@ -32,12 +32,12 @@ export const useTheme = () => {
 export default function ThemeProvider({
   children,
 }: Readonly<React.PropsWithChildren>) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<ModeType>("light");
 
   useEffect(() => {
     (async () => {
       const savedTheme = (await AsyncStorage.getItem("theme")) as
-        | Theme
+        | ModeType
         | "light";
       if (savedTheme) {
         setTheme(savedTheme);

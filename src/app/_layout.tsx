@@ -62,7 +62,12 @@ export default function RootLayout() {
 
   return (
     <Providers>
-      <Stack/>
+      <Stack screenOptions={{
+        headerShown: false,
+      }}>
+        <Stack.Screen name="(auth)" options={{headerShown: false}} />
+        <Stack.Screen name="(tab)" options={{headerShown: false}} />
+      </Stack>
     </Providers>
   );
 }

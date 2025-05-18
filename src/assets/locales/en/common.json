@@ -1,3 +1,8 @@
 {
-  "appName": "My App"
+  "appName": "My App",
+  "app": {
+    "name": "You Name",
+    "description": "Your App Description",
+    "slagon": "Your App Slagon"
+  }
 }

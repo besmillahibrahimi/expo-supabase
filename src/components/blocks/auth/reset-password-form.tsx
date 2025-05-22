@@ -26,7 +26,7 @@ import {
 
 
 
-export default function ResetPasswordForm({ code, access_token, type }: Readonly<{ code: string, access_token: string, type: string }>) {
+export default function ResetPasswordForm({ token,  }: Readonly<{ token: string, }>) {
   
   const router = useRouter();
   const { t } = useTranslation(["auth"]);
@@ -55,34 +55,40 @@ export default function ResetPasswordForm({ code, access_token, type }: Readonly
       }
       setIsPending(true);
       const res = await resetPassword(data);
+      
       if (res.ok) {
         toast.show({
           title: t("success"),
-          description: t("resetPasswordSuccess"),
+          description: t("resetPassword.success"),
         });
         router.push("/login");
+      }
+      if (!res.ok) {
+        toast.show({
+          title: t("error"),
+          description: res.error.message,
+        });
       }
       setIsPending(false);
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: just look at the token changes
   useEffect(() => {
     (async () => {
-      if (type === 'recovery' && (code || access_token)) {
-        const token = code ?? access_token;           // depends on Supabase version
-        const { data, error } = await supabase.auth.exchangeCodeForSession(token );
+      if ( (token)) {
+        const {  error } = await supabase.auth.exchangeCodeForSession(token );
+        
         if (error) {
           toast.show({
             title: t("error"),
             description: error.message,
           });
         } 
-        if (data) {
-          router.push("/");
-        }
+        
       }
     })();
-  }, [code, access_token, type, router, t, toast]);
+  }, [token]);
 
   return (
     <Box className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">

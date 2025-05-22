@@ -4,7 +4,7 @@
 import { supabase } from "@/configs/supabase";
 import type { Profile } from "@/types/models/profile";
 import type { User } from "@supabase/supabase-js";
-import { useRouter } from "expo-router";
+
 import { useCallback, useEffect, useReducer, useTransition } from "react";
 export interface AuthState {
   authUser: User | null;
@@ -31,7 +31,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 }
 
 export function useAuth() {
-  const router = useRouter();
+  
   const [isPending, startTransition] = useTransition();
   const [state, dispatch] = useReducer(authReducer, {
     authUser: null,
@@ -42,8 +42,6 @@ export function useAuth() {
   const fetchCurrentUser = useCallback(async () => {
     startTransition(async () => {
       try {
-        
-
         const authUser = await supabase.auth.getUser();
 
         if (authUser.data.user) {

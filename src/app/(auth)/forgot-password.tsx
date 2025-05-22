@@ -5,7 +5,7 @@ import ForgotPasswordForm from "../../components/blocks/auth/forgot-password-for
 
 export default function ForgotPasswordPage() {
   return (
-    <SafeAreaView edges={["bottom"]}>
+    <SafeAreaView edges={["bottom", 'top']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         

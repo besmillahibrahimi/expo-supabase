@@ -5,6 +5,7 @@ import { Env } from "../env";
 
 export const supabase = createClient(Env.supabase.url, Env.supabase.anonKey, {
   auth: {
+    flowType: 'pkce',
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,

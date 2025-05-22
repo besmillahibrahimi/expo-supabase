@@ -80,7 +80,7 @@ export default function ForgotPasswordForm() {
           {t("forgotPassword.label")}
         </Heading>
 
-        {true ?
+        {isSent ?
         <VStack space="md" className="space-y-4 w-full">
           <Text className="text-center">
             {t("forgotPassword.success")}

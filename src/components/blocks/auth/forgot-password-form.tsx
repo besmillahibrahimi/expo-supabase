@@ -4,26 +4,35 @@ import {
   FormControlError,
   FormControlErrorText,
   FormControlLabel,
-  FormControlLabelText
+  FormControlLabelText,
 } from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { VStack } from "@/components/ui/vstack";
+import { useToast } from "@/hooks/use-toast";
 import { forgotPassword } from "@/services/auth/forgot-password.service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as IntentLauncher from 'expo-intent-launcher';
 import { Link } from "expo-router";
-import { useTransition } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Platform } from "react-native";
+import { openInbox } from 'react-native-email-link';
 import {
   type ForgotPasswordFormData,
   forgotPasswordSchema,
 } from "../../../lib/schema/forgot-password.schema";
 import { Box } from "../../ui/box";
+import { Text } from "../../ui/text";
+
 
 export default function ForgotPasswordForm() {
-  const { t } = useTranslation(['auth']);
-  const [isPending, startTransition] = useTransition();
+  const { t } = useTranslation(["auth"]);
+  const [isPending, setIsPending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  
+  const toast = useToast();
 
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -35,12 +44,35 @@ export default function ForgotPasswordForm() {
   const handleSubmit = async () => {
     const res = await form.trigger();
     if (res) {
-      startTransition(async () => {
-        const res = await forgotPassword(form.getValues());
-        if (res.ok) {
-          form.reset();
-        }
-      });
+      setIsPending(true);
+      const res = await forgotPassword(form.getValues());
+      if (res.ok) {
+        form.reset();
+        toast.show({
+          title: t("success"),
+          description: t("forgotPassword.success"),
+        });
+      }
+
+      if (!res.ok) {
+        toast.show({
+          title: t("error"),
+          description: res.error.message,
+        });
+      }
+
+      setIsPending(false);
+    }
+  };
+
+  const openEmailApp = async () => {
+    if (Platform.OS === 'ios') {
+      await openInbox(); // opens Mail, Gmail, Outlook, Spark, etc.
+    } else {
+      await IntentLauncher.startActivityAsync(
+        'android.intent.action.MAIN',
+        { category: 'android.intent.category.APP_EMAIL' }
+      );
     }
   };
 
@@ -48,20 +80,41 @@ export default function ForgotPasswordForm() {
     <Box className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
       <VStack space="md">
         <Heading size="xl" className="text-center">
-          {t("forgotPassword")}
+          {t("forgotPassword.label")}
         </Heading>
 
-        <Box className="space-y-4 w-full">
+        {true ?
+        <VStack space="md" className="space-y-4 w-full">
+          <Text className="text-center">
+            {t("forgotPassword.success")}
+          </Text>
+          <Button onPress={openEmailApp}>
+            <ButtonText>
+              {t("openEmailApp")}
+            </ButtonText>
+          </Button>
+        </VStack>
+        : <VStack space="md" className="space-y-4 w-full">
           <Controller
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormControl isRequired isInvalid={!!form.formState.errors.email?.message} isDisabled={isPending}>
+              <FormControl
+                isRequired
+                isInvalid={!!form.formState.errors.email?.message}
+                isDisabled={isPending}
+              >
                 <FormControlLabel>
-                  <FormControlLabelText>{t("email.label")}</FormControlLabelText>
+                  <FormControlLabelText>
+                    {t("email.label")}
+                  </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                   <InputField
+                    accessibilityLabel={t("email.label")}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
                     placeholder={t("email.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -69,7 +122,8 @@ export default function ForgotPasswordForm() {
                 </Input>
                 <FormControlError>
                   <FormControlErrorText>
-                    {form.formState.errors.email?.message && t(form.formState.errors.email?.message)}
+                    {form.formState.errors.email?.message &&
+                      t(form.formState.errors.email?.message)}
                   </FormControlErrorText>
                 </FormControlError>
               </FormControl>
@@ -85,7 +139,7 @@ export default function ForgotPasswordForm() {
               {isPending ? <ButtonSpinner /> : t("sendResetInstructions")}
             </ButtonText>
           </Button>
-        </Box>
+        </VStack>}
 
         <Link href="/login" className="text-blue-600 hover:text-blue-800">
           {t("loginBack")}

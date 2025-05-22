@@ -1,8 +1,8 @@
 import {
-    Toast,
-    ToastDescription,
-    ToastTitle,
-    useToast as useToastUI,
+  Toast,
+  ToastDescription,
+  ToastTitle,
+  useToast as useToastUI,
 } from "@/components/ui/toast";
 import type { InterfaceToastProps } from "@gluestack-ui/toast/lib/types";
 import { useId } from "react";
@@ -18,9 +18,10 @@ export const useToast = () => {
   const show = (props: UseToastProps) => {
     toast.show({
       id: uniqueToastId,
+      placement: props.placement ?? 'top',
       render({ id }) {
         return (
-          <Toast nativeID={`toast-${id}`} action="muted" variant="solid">
+          <Toast nativeID={`toast-${id}`} action="muted" variant="solid" >
             <ToastTitle>{props.title}</ToastTitle>
             <ToastDescription>{props.description}</ToastDescription>
           </Toast>

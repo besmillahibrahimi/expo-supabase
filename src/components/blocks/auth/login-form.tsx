@@ -14,7 +14,7 @@ import { VStack } from "@/components/ui/vstack";
 import { login } from "@/services/auth/login.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
-import { useTransition } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,7 +28,7 @@ export default function LoginForm() {
   const router = useRouter();
   const { t } = useTranslation(["auth"]);
 
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,10 +42,10 @@ export default function LoginForm() {
     console.log("form res", res);
     if (res) {
       const data = form.getValues();
-      startTransition(async () => {
-        const res = await login(data);
-        console.log("login res", res);
-        if (!res.ok) {
+      setIsPending(true);
+      const res = await login(data);
+      console.log("login res", res);
+      if (!res.ok) {
           const newId = Math.random();
           toast.show({
             id: newId.toString(),
@@ -61,9 +61,9 @@ export default function LoginForm() {
           });
         }
         if (res.ok) {
-          router.push("/");
-        }
-      });
+        router.push("/");
+      }
+      setIsPending(false);
     }
   };
 
@@ -76,6 +76,9 @@ export default function LoginForm() {
 
         <VStack space="md" className="w-full">
           <GoogleSignIn />
+          <Link href="/(auth)/magic-login">
+              {t("magicLogin")}
+          </Link>
           <Controller
             control={form.control}
             name="email"
@@ -90,6 +93,10 @@ export default function LoginForm() {
                 </FormControlLabel>
                 <Input>
                   <InputField
+                    accessibilityLabel={t("email.label")}
+                  autoCapitalize="none"
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
                     placeholder={t("email.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -118,8 +125,9 @@ export default function LoginForm() {
                   <FormControlLabelText>Password</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField
+                  <InputField 
                     type="password"
+                    accessibilityLabel={t("password.label")}
                     placeholder={t("password.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -136,8 +144,8 @@ export default function LoginForm() {
             )}
           />
 
-          <Link href="/forgot-password">
-            Forgot Password?
+          <Link href="/(auth)/forgot-password">
+            {`${t("forgotPassword.label")}?`}
           </Link>
 
           <Button

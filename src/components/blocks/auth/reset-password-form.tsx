@@ -11,10 +11,12 @@ import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
+import { supabase } from "@/configs/supabase";
+import { useToast } from "@/hooks/use-toast";
 import { resetPassword } from "@/services/auth/reset-password.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
-import { useTransition } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -22,10 +24,16 @@ import {
   resetPasswordSchema,
 } from "../../../lib/schema/reset-password.schema";
 
-export default function ResetPasswordForm() {
+
+
+export default function ResetPasswordForm({ code, access_token, type }: Readonly<{ code: string, access_token: string, type: string }>) {
+  
   const router = useRouter();
   const { t } = useTranslation(["auth"]);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
+  const toast = useToast();
+
+  
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -37,33 +45,63 @@ export default function ResetPasswordForm() {
   const handleSubmit = async () => {
     const res = await form.trigger();
     if (res) {
-      startTransition(async () => {
-        const res = await resetPassword(form.getValues());
-        if (res.ok) {
-          router.push("/login");
-        }
-      });
+      const data = form.getValues();
+      if (data.password !== data.confirmPassword) {
+        toast.show({
+          title: t("error"),
+          description: t("confirmPassword.notMatch"),
+        });
+        return;
+      }
+      setIsPending(true);
+      const res = await resetPassword(data);
+      if (res.ok) {
+        toast.show({
+          title: t("success"),
+          description: t("resetPasswordSuccess"),
+        });
+        router.push("/login");
+      }
+      setIsPending(false);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      if (type === 'recovery' && (code || access_token)) {
+        const token = code ?? access_token;           // depends on Supabase version
+        const { data, error } = await supabase.auth.exchangeCodeForSession(token );
+        if (error) {
+          toast.show({
+            title: t("error"),
+            description: error.message,
+          });
+        } 
+        if (data) {
+          router.push("/");
+        }
+      }
+    })();
+  }, [code, access_token, type, router, t, toast]);
 
   return (
     <Box className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
       <VStack space="md">
         <Heading size="xl" className="text-center">
-          Reset Password
+          {t("resetPassword.label")}
         </Heading>
 
         <Text className="text-center">
-          Enter your new password to reset your account.
+          {t("resetPassword.description")}
         </Text>
-        <Box className="space-y-4 w-full">
+        <VStack space="md" className="space-y-4 w-full">
           <Controller
             control={form.control}
             name="password"
             render={({ field }) => (
               <FormControl isRequired isInvalid={!!form.formState.errors.password?.message} isDisabled={isPending}>
                 <FormControlLabel>
-                  <FormControlLabelText>{t("password")}</FormControlLabelText>
+                  <FormControlLabelText>{t("password.label")}</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                   <InputField type="password"
@@ -89,7 +127,7 @@ export default function ResetPasswordForm() {
               <FormControl isRequired isInvalid={!!form.formState.errors.confirmPassword?.message} isDisabled={isPending}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {t("confirmPassword")}
+                    {t("confirmPassword.label")}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -114,11 +152,11 @@ export default function ResetPasswordForm() {
             className="mt-4"
             onPress={handleSubmit}
           >
-            <ButtonText>
-              {isPending ? <ButtonSpinner /> : t("resetPassword")}
+            <ButtonText className="">
+              {isPending ? <ButtonSpinner /> : t("resetPassword.label")}
             </ButtonText>
           </Button>
-        </Box>
+        </VStack>
       </VStack>
     </Box>
   );

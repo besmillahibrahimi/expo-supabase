@@ -14,7 +14,7 @@ import { type SignupFormData, signupSchema } from "@/lib/schema/signup.schema";
 import { signup } from "@/services/auth/signup.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
-import { useTransition } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -31,7 +31,7 @@ export default function SignupForm() {
       confirmPassword: "",
     },
   });
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = async () => {
     const res = await form.trigger();
@@ -43,12 +43,12 @@ export default function SignupForm() {
         });
         return;
       }
-      startTransition(async () => {
-        const res = await signup(data);
-        if (res.ok) {
-          router.push("/login");
-        }
-      });
+      setIsPending(true);
+      const res = await signup(data);
+      if (res.ok) {
+        router.push("/login");
+      }
+      setIsPending(false);
     }
   };
 
@@ -74,6 +74,11 @@ export default function SignupForm() {
                 </FormControlLabel>
                 <Input>
                   <InputField
+                    accessibilityLabel={t("name.label")}
+                    keyboardType="name-phone-pad"
+                    textContentType="name"
+                    type="text"
+                    enablesReturnKeyAutomatically
                     placeholder={t("name.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -104,6 +109,11 @@ export default function SignupForm() {
                 </FormControlLabel>
                 <Input>
                   <InputField
+                    accessibilityLabel={t("email.label")}
+                    autoCorrect={true}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
                     placeholder={t("email.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -134,7 +144,9 @@ export default function SignupForm() {
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField type="password"
+                  <InputField
+                    accessibilityLabel={t("password.label")}
+                    type="password"
                     placeholder={t("password.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -164,7 +176,9 @@ export default function SignupForm() {
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
-                  <InputField type="password"
+                  <InputField
+                    accessibilityLabel={t("confirmPassword.label")}
+                    type="password"
                     placeholder={t("confirmPassword.placeholder")}
                     value={field.value}
                     onChangeText={field.onChange}
@@ -187,7 +201,7 @@ export default function SignupForm() {
             onPress={handleSubmit}
           >
             <ButtonText>
-              {isPending ? <ButtonSpinner />: t("getStarted")}
+              {isPending ? <ButtonSpinner /> : t("getStarted")}
             </ButtonText>
           </Button>
         </VStack>

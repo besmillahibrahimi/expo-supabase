@@ -4,5 +4,7 @@
     "name": "You Name",
     "description": "Your App Description",
     "slagon": "Your App Slagon"
-  }
+  },
+  "error": "Error",
+  "success": "Success"
 }

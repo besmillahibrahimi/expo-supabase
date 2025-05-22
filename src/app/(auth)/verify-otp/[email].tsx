@@ -1,13 +1,11 @@
+import VerifyOtp from "@/components/blocks/auth/verify-otp-form";
 import { Box } from "@/components/ui/box";
 import { useLocalSearchParams } from "expo-router";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ResetPasswordForm from "../../components/blocks/auth/reset-password-form";
 
-export default function ResetPasswordPage() {
-  
-  const { code, access_token, type } = useLocalSearchParams();
-
+export default function VerifyOtpPage() {
+  const { email } = useLocalSearchParams();
   return (
     <SafeAreaView edges={["bottom"]}>
       <KeyboardAvoidingView
@@ -15,7 +13,7 @@ export default function ResetPasswordPage() {
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <Box className="min-h-screen w-full flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <ResetPasswordForm code={code as string} access_token={access_token as string} type={type as string} />
+            <VerifyOtp email={email as string} />
           </Box>
         </ScrollView>
       </KeyboardAvoidingView>

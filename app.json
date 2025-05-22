@@ -60,10 +60,8 @@
       "supportsRTL": true,
       "router": {
         "root": "src/app"
-      },
-      "eas": {
-        "projectId": "037d8a85-1d61-455a-8338-2781d04f21f5"
       }
+      
     }
   }
 }

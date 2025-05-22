@@ -18,7 +18,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Platform } from "react-native";
-import { openInbox } from 'react-native-email-link';
 import {
   type ForgotPasswordFormData,
   forgotPasswordSchema,
@@ -66,9 +65,7 @@ export default function ForgotPasswordForm() {
   };
 
   const openEmailApp = async () => {
-    if (Platform.OS === 'ios') {
-      await openInbox(); // opens Mail, Gmail, Outlook, Spark, etc.
-    } else {
+    if (Platform.OS === 'android') {
       await IntentLauncher.startActivityAsync(
         'android.intent.action.MAIN',
         { category: 'android.intent.category.APP_EMAIL' }

@@ -12,13 +12,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "ExpoLocalization_supportsRTL": true,
-        "ITSAppUsesNonExemptEncryption": false,
-        "LSApplicationQueriesSchemes": [
-          "mailto",
-          "ms-outlook",
-          "googlegmail",
-          "readdle-spark"
-        ]
+        "ITSAppUsesNonExemptEncryption": false
+        
       },
       "bundleIdentifier": "com.besmillahibrahimi.educationalapp"
       
@@ -60,8 +55,7 @@
           "configureAndroidBackup": true,
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
-      ],
-      "react-native-email-link"
+      ]
       
     ],
     "experiments": {

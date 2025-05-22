@@ -74,7 +74,6 @@
     "react-i18next": "^15.5.1",
     "react-native": "0.79.2",
     "react-native-css-interop": "^0.1.22",
-    "react-native-email-link": "^1.16.1",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
